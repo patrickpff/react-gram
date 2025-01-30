@@ -18,10 +18,10 @@ app.use(cors({ credentials: true, origin: process.env.HOST }))
 // Upload directory
 app.use("/uploads", express.static(path.join(__dirname, "/uploads")))
 
-require("./config/db.jsx")
+require("./config/db.js")
 
 // routes
-const router = require("./routes/Router.jsx");
+const router = require("./routes/Router.js");
 app.use(router)
 
 app.listen(port, () => {
