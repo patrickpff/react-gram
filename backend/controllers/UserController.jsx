@@ -1,4 +1,4 @@
-const User = require('../models/User')
+const User = require('../models/User.jsx')
 
 const bcrypt = require("bcryptjs")
 const jwt = require("jsonwebtoken")
@@ -47,6 +47,33 @@ const register = async (req, res) => {
     })
 }
 
+// login
+const login = async (req, res) => {
+    const {email, password} = req.body
+
+    const user = await User.findOne({email})
+
+    // Check if user exists
+    if (!user) {
+        res.status(404).json({errors: ["User not found."]})
+        return
+    }
+
+    // Check if password matches
+    if(!(await bcrypt.compare(password, user.password))) {
+        res.status(422).json({errors: ["Invalid password"]})
+        return
+    }
+
+    // return user with token
+    res.status(201).json({
+        _id: user._id,
+        profileImage: user.profileImage,
+        token: generateToken(user.id)
+    })
+}
+
 module.exports = {
     register,
+    login,
 }
