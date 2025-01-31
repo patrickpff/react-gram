@@ -3,11 +3,15 @@ const jwt = require("jsonwebtoken")
 const jwtSecret = process.env.JWT_SECRET
 
 const authGuard = async (req, res, next) => {
-    const authHeader = req.header["authorization"]
+    const authHeader = req.headers["authorization"]
     const token = authHeader && authHeader.split(" ")[1]
 
     // check if header has a token
-    if(!token) return res.status(401).json({errors: ["Access denied!"]})
+    if(!token) return res.status(401).json(
+        {
+            errors: ["Access denied!"],
+        }
+    )
 
     // check if token is valid
     try {
@@ -20,3 +24,5 @@ const authGuard = async (req, res, next) => {
         res.status(401).json({errors: ["Token invalid!"]})
     }
 }
+
+module.exports = authGuard
