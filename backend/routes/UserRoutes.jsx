@@ -5,7 +5,8 @@ const router = express.Router()
 const { 
     register, 
     login, 
-    getCurrentUser
+    getCurrentUser,
+    update
 } = require("../controllers/UserController.jsx")
 
 // Middlewares
@@ -13,12 +14,16 @@ const authGuard = require("../middlewares/authGuard.jsx")
 const validate = require("../middlewares/handleValidation.jsx")
 const { 
     userCreateValidation, 
-    loginValidation 
+    loginValidation, 
+    userUpdateValidation
 } = require("../middlewares/userValidations.jsx")
+
+const { imageUpload } = require("../middlewares/imageUpload.jsx")
 
 // Routes
 router.post("/register", userCreateValidation(), validate, register)
 router.post("/login", loginValidation(), validate, login)
 router.get("/profile", authGuard, getCurrentUser)
+router.put("/", authGuard, userUpdateValidation(), validate, imageUpload.single("profileImage"), update)
 
 module.exports = router
