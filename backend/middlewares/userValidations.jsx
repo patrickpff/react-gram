@@ -56,7 +56,7 @@ const userUpdateValidation = () => {
         body("password")
             .optional()
             .isLength({ min: 5 })
-            .withMessage("The name has to be at least 5 characters long")
+            .withMessage("The password has to be at least 5 characters long")
     ]
 }
 
