@@ -83,9 +83,96 @@ const getUserPhotos = async (req, res) => {
     return res.status(200).json(photos)
 }
 
+// Get photo by id
+const getPhotoById = async (req, res) => {
+    const {id} = req.params
+
+    const photo = await Photo.findById(new mongoose.Types.ObjectId(id))
+
+    // Check if photo exists
+    if (!photo) {
+        res.status(404).json({errors: ["Photo not found"]})
+        return
+    }
+
+    res.status(200).json(photo)
+}
+
+// Update a photo
+const updatePhoto = async (req, res) => {
+    const {id} = req.params
+    const {title} = req.body
+
+    const reqUser = req.user
+
+    const photo = await Photo.findById(id)
+
+    // Check if photo exists
+    if (!photo) {
+        res.status(404).json({errors: ["Photo not found"]})
+        return
+    }
+
+    // Check if photo belongs to user
+    if (!photo.userId.equals(reqUser._id)) {
+        res.status(422).json({errors: ["This photo does not belongs to you!"]})
+        return
+    }
+
+    if (title) {
+        photo.title = title
+    }
+
+    await photo.save()
+
+    res.status(200).json({
+        photo,
+        message: "Your photo was updated sucessfully."
+    })
+
+}
+
+// Like function
+const likePhoto = async (req, res) => {
+    const {id} = req.params
+
+    const reqUser = req.user
+
+    const photo = await Photo.findById(id)
+
+    // Check if photo exists
+    if (!photo) {
+        res.status(404).json({errors: ["Photo not found"]})
+        return
+    }
+
+    // Check if user already liked the photo
+    if(photo.likes.includes(reqUser._id)) {
+        req.status(422).json({
+            errors: ["You already liked this photo."]
+        })
+        return
+    }
+
+    // Put user id in likes array
+    photo.likes.push(reqUser._id)
+
+    await photo.save()
+
+    res.status(200).json({
+        photoId: id,
+        userId: reqUser._id,
+        message: "You liked this photo!"
+    })
+
+}
+
 module.exports = {
     insertPhoto,
     deletePhoto,
     getAllPhotos,
     getUserPhotos,
+    getPhotoById,
+    updatePhoto,
+    likePhoto,
 }

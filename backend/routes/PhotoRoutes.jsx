@@ -6,11 +6,14 @@ const {
     insertPhoto, 
     deletePhoto, 
     getAllPhotos, 
-    getUserPhotos 
+    getUserPhotos, 
+    getPhotoById,
+    updatePhoto,
+    likePhoto
 } = require("../controllers/PhotoController.jsx")
 
 // Middlewares
-const {photoInsertValidation} = require("../middlewares/photoValidation.jsx")
+const {photoInsertValidation, photoUpdateValidation} = require("../middlewares/photoValidation.jsx")
 const authGuard = require("../middlewares/authGuard.jsx")
 const validate = require("../middlewares/handleValidation.jsx")
 const { imageUpload } = require("../middlewares/imageUpload.jsx")
@@ -20,6 +23,9 @@ router.post("/", authGuard, imageUpload.single("image"), photoInsertValidation()
 router.delete("/:id", authGuard, deletePhoto)
 router.get("/", authGuard, getAllPhotos)
 router.get("/user/:id", authGuard, getUserPhotos)
+router.get("/:id", authGuard, getPhotoById)
+router.put("/:id", authGuard, photoUpdateValidation(), validate, updatePhoto)
+router.put("/like/:id", authGuard, likePhoto)
 
 
 module.exports = router
