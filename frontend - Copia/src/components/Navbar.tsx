@@ -25,7 +25,7 @@ const Navbar = () => {
         </li>
         <li>
           <NavLink to="/register">
-            Cadastrar
+            Register
           </NavLink>
         </li>
       </ul>
