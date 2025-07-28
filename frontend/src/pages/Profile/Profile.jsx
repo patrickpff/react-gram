@@ -14,7 +14,7 @@ import { useParams } from "react-router-dom"
 
 // redux
 import { getUserDetails } from "../../slices/userSlice"
-import { publishPhoto, resetMessage } from "../../slices/photoSlice"
+import { publishPhoto, resetMessage, getUserPhotos } from "../../slices/photoSlice"
 
 const Profile = () => {
 
@@ -39,6 +39,7 @@ const Profile = () => {
     // load user data
     useEffect(() => {
         dispatch(getUserDetails(id))
+        dispatch(getUserPhotos(id))
     }, [dispatch, id])
 
     if (loading) {
@@ -69,7 +70,6 @@ const Profile = () => {
         dispatch(publishPhoto(formData))
 
         setTimeout(() => {
-            console.log(errorPhoto)
             dispatch(resetMessage())
         }, 2000)
     }
@@ -115,6 +115,35 @@ const Profile = () => {
                     {messagePhoto && <Message msg={messagePhoto} type="success" />}
                 </>
             )}
+
+            <div className="user-photos">
+                <h2>Published photos!</h2>
+                <div className="photos-container">
+                    {photos && photos.map((photo) => (
+                        <div className="photo" key={photo._id}>
+                            {photo.image && (
+                                <img 
+                                    src={`${uploads}/photos/${photo.image}`} 
+                                    alt={photo.title} 
+                                />
+                            )}
+                            {id === userAuth._id ? (
+                                <div className="actions">
+                                    <Link to={`/photo/${photo._id}`}>
+                                        <BsFillEyeFill />
+                                    </Link>
+                                    <BsPencilFill />
+                                    <BsXLg />
+                                </div>
+                            ) : (
+                                <Link className="btn" to={`/photo/${photo._id}`}>See</Link>
+                            )}
+                        </div>
+                    ))}
+
+                    {photos.length === 0 && <p>There are no photos published by this user.</p>}
+                </div>
+            </div>
         </div>
     )
 }
