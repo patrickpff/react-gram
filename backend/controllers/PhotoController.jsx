@@ -27,7 +27,7 @@ const insertPhoto = async (req, res) => {
         return
     }
 
-    res.status(200).json(newPhoto)
+    res.status(200).json({ newPhoto })
 }
 
 // Remove a photo from DB

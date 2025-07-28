@@ -32,7 +32,6 @@ const EditProfile = () => {
 
   // Fill form with user data
   useEffect(() => {
-    console.log(user)
     if (user) {
       setName(user.name)
       setEmail(user.email)
