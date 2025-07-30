@@ -14,7 +14,7 @@ import { useParams } from "react-router-dom"
 
 // redux
 import { getUserDetails } from "../../slices/userSlice"
-import { publishPhoto, resetMessage, getUserPhotos, deletePhoto } from "../../slices/photoSlice"
+import { publishPhoto, resetMessage, getUserPhotos, deletePhoto, updatePhoto } from "../../slices/photoSlice"
 
 const Profile = () => {
 
@@ -93,6 +93,15 @@ const Profile = () => {
     // update a photo
     const handleUpdate = (e) => {
         e.preventDefault()
+
+        const photoData = {
+            title: editTitle,
+            id: editId
+        }
+
+        dispatch(updatePhoto(photoData))
+
+        resetComponentMessage()
     }
 
     const handleEdit = (photo) => {
@@ -155,11 +164,11 @@ const Profile = () => {
                     </div>
 
                     <div className="edit-photo hide" ref={editPhotoForm}>
-                        <p>Editing:</p>
+                        <h3>Editing:</h3>
                         {editImage && (
                             <img src={`${uploads}/photos/${editImage}`} alt={editTitle} />
                         )}
-                        <form onSubmit={submitHandle}>
+                        <form onSubmit={handleUpdate}>
                             <input 
                                 type="text" 
                                 placeholder="Update the title" 
@@ -189,7 +198,7 @@ const Profile = () => {
                             )}
                             {id === userAuth._id ? (
                                 <div className="actions">
-                                    <Link to={`/photo/${photo._id}`}>
+                                    <Link to={`/photos/${photo._id}`}>
                                         <BsFillEyeFill />
                                     </Link>
                                     <BsPencilFill onClick={() => handleEdit(photo)} />
