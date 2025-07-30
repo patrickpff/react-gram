@@ -66,7 +66,7 @@ Then, install dependencies and start the server:
 
 ```bash
 npm install
-npm start
+npm run server
 ```
 
 > The backend should now be running (usually on `http://localhost:5000` or the configured port).
@@ -78,10 +78,10 @@ npm start
 ```bash
 cd frontend
 npm install
-npm start
+npm run dev
 ```
 
-> The frontend should be accessible at `http://localhost:3000` by default.
+> The frontend should be accessible at ` http://localhost:5173/` by default.
 
 Make sure the backend is running before using the frontend, so API requests function correctly.
 
@@ -94,9 +94,17 @@ Make sure the backend is running before using the frontend, so API requests func
 You must create a `.env` file in the `backend` folder based on the `.env.example` provided. Example variables you may need to fill in:
 
 ```env
-MONGO_URI=your_mongo_connection_string
-DB_NAME=your_database_name
+# General configuration
 PORT=5000
+HOST="http://localhost:5173"
+
+# DATABASE
+DB_USERNAME=your_mongodb_username
+DB_PASSWORD=your_mongodb_password
+DB_CLUSTER=cluster0.qrwym
+DB_APP_NAME=Cluster0
+
+JWT_SECRET=your_jwt_secret_key
 ```
 
 ---

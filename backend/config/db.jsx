@@ -3,7 +3,10 @@ const mongoose = require("mongoose")
 
 const dbUser = process.env.DB_USERNAME
 const dbPassword = process.env.DB_PASSWORD
-const strConn = `mongodb+srv://${dbUser}:${dbPassword}@cluster0.qrwym.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`
+const dbCluster = process.env.DB_CLUSTER
+const dbAppName = process.env.DB_APP_NAME
+
+const strConn = `mongodb+srv://${dbUser}:${dbPassword}@${dbCluster}.mongodb.net/?retryWrites=true&w=majority&appName=${dbAppName}`
 
 const conn = async () => {
     try {
