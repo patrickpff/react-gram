@@ -104,7 +104,7 @@ PORT=5000
 ## 📦 Tech Stack
 
 - **Frontend:** React
-- **Backend:** React (Express or other backend framework assumed)
+- **Backend:** React
 - **Database:** MongoDB Atlas
 
 ---
